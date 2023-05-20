@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-// Report to app.segment.io
+// ReportSegment Report to app.segment.io
 func ReportSegment(writeKey string, message string, attributes map[string]interface{}) {
 
 	client := analytics.New(writeKey)
