@@ -1,4 +1,4 @@
-package pkg
+package segment
 
 import (
 	"github.com/segmentio/analytics-go/v3"
