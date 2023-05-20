@@ -1,4 +1,4 @@
-module bitmyth/notify
+module github.com/bitmyth/notify
 
 go 1.19
 
