@@ -15,5 +15,6 @@ func NewNotifier(url string) *Notifier {
 }
 
 func (n Notifier) Trigger() (resp *http.Response, err error) {
+	defer resp.Body.Close()
 	return http.Get(n.url)
 }
