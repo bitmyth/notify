@@ -17,7 +17,6 @@ func NewNotifier(url string) *Notifier {
 func (n Notifier) Trigger() (resp *http.Response, err error) {
 	resp, err = http.Get(n.url)
 	if err != nil {
-		println(err.Error())
 		return
 	}
 	defer func() {
