@@ -1,8 +1,10 @@
 package email
 
 import (
+	"crypto/tls"
 	"fmt"
-	"net/smtp"
+	gomail "gopkg.in/mail.v2"
+	"strings"
 )
 
 const (
@@ -14,7 +16,7 @@ type Mail struct {
 	From     string
 	To       []string
 	Password string
-	Port     string
+	Port     int
 	Host     string
 }
 
@@ -52,7 +54,7 @@ func SmtpHost(Host string) Option {
 	}
 }
 
-func SmtpPort(port string) Option {
+func SmtpPort(port int) Option {
 	return func(m *Mail) {
 		m.Port = port
 	}
@@ -78,7 +80,7 @@ func (m *Mail) SetSmtpHost(host string) *Mail {
 	return m
 }
 
-func (m *Mail) SetSmtpPort(port string) *Mail {
+func (m *Mail) SetSmtpPort(port int) *Mail {
 	m.Port = port
 	return m
 }
@@ -97,19 +99,43 @@ func (m Mail) Send(messageText string) error {
 	smtpPort := m.Port
 
 	// Message.
-	message := []byte(messageText)
+	//message := []byte(messageText)
 
-	// Authentication.
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	//// Authentication.
+	//auth := smtp.PlainAuth("", from, password, smtpHost)
+	//
+	//// Sending email.
+	//err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+	//if err != nil {
+	//	return err
+	//}
 
-	// Sending email.
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
-	if err != nil {
+	mm := gomail.NewMessage()
+
+	// Set E-Mail sender
+	mm.SetHeader("From", from)
+
+	// Set E-Mail receivers
+	mm.SetHeader("To", strings.Join(to, ","))
+
+	// Set E-Mail subject
+	mm.SetHeader("Subject", messageText)
+
+	// Set E-Mail body. You can set plain text or html with text/html
+	mm.SetBody("text/plain", messageText)
+
+	// Settings for SMTP server
+	d := gomail.NewDialer(smtpHost, smtpPort, from, password)
+
+	// This is only needed when SSL/TLS certificate is not valid on server.
+	// In production this should be set to false.
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	// Now send E-Mail
+	if err := d.DialAndSend(mm); err != nil {
 		fmt.Println(err)
 		return err
 	}
-
-	fmt.Println("Email Sent Successfully!")
 
 	return nil
 }
