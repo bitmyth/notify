@@ -1,5 +1,7 @@
 package email
 
+// https://www.loginradius.com/blog/engineering/sending-emails-with-golang/
+
 import (
 	"crypto/tls"
 	"fmt"
