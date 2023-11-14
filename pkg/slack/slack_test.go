@@ -2,13 +2,11 @@ package slack
 
 import "testing"
 
+var config Config
+
 func TestSlack(t *testing.T) {
 
-	conf := Config{
-		SlackToken:     "",
-		SlackChannelID: "CSQS3019B",
-	}
-	s := Init(&conf)
+	s := Init(&config)
 	err := s.SendSlackMessage("haha")
 	if err != nil {
 		t.Error(err)
