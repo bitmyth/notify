@@ -2,8 +2,6 @@ package slack
 
 import "testing"
 
-var config Config
-
 func TestSlack(t *testing.T) {
 
 	s := Init(&config)

@@ -32,6 +32,8 @@ type Config struct {
 	SlackChannelID string
 }
 
+var config Config
+
 func Init(cfg *Config) *Slack {
 	//log.Fatalln("error reading slack credentials from config")
 	return &Slack{
