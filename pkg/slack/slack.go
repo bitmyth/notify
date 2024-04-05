@@ -3,6 +3,7 @@ package slack
 import (
 	"github.com/slack-go/slack"
 	"log"
+	"strings"
 )
 
 type Slack struct {
@@ -22,8 +23,9 @@ func (s *Slack) SendSlackMessage(message string) error {
 	if err != nil {
 		return err
 	}
+
 	if len(message) > 20 {
-		message = message[0:20] + "..."
+		message = strings.TrimLeft(message[0:20], "\r\n") + "..."
 	}
 	log.Printf("message %s", message)
 	log.Printf("Message sent successfully to %s channel at %s", ChannelID, timestamp)
