@@ -25,7 +25,7 @@ func (s *Slack) SendSlackMessage(message string) error {
 	}
 
 	if len(message) > 20 {
-		message = strings.TrimLeft(message[0:20], "\r\n") + "..."
+		message = strings.TrimLeft(message[0:20], "\r\n ") + "..."
 	}
 	log.Printf("message %s", message)
 	log.Printf("Message sent successfully to %s channel at %s", ChannelID, timestamp)
